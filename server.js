@@ -1,6 +1,9 @@
 const authRoutes = require('./routes/auth');
 const express = require('express');
 const mongoose = require('mongoose');
+const shopRoutes = require('./routes/shopRoutes');
+const { protect } = require('./middlewares/authMiddleware'); 
+
 const app = express();
 require('dotenv').config();
 
@@ -9,6 +12,8 @@ require('dotenv').config();
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+
+app.use('/api/shop', shopRoutes);
 // MongoDB connection
 mongoose.connect('mongodb://localhost:27017/queue_check', {
     useNewUrlParser: true,

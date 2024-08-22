@@ -5,15 +5,9 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-// const testPassword = '12345'; // Example plaintext password
-// const testHash = '$2a$10$XQ69nQvNa2nG47WQDuUZ2OUldKirpS.5xcyKgOgAhAtzAObrI8WM.'; // Example hash
-// const isMatch =  bcrypt.compare(testPassword, testHash);
-// console.log(isMatch); // Should print `true`
-
-
 // Register route
 router.post('/register', validateRegister, async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;  // Include role in the request
     try {
         // Check if the user already exists
         const existingUser = await User.findOne({ username });
@@ -25,10 +19,11 @@ router.post('/register', validateRegister, async (req, res) => {
         const salt = await bcrypt.genSalt(10); // Generate salt for hashing
         const hashedPassword = await bcrypt.hash(password, salt); // Hash the password
 
-        // Create a new user with the hashed password
+        // Create a new user with the hashed password and role
         const user = new User({ 
             username, 
-            password: hashedPassword // Store the hashed password
+            password: hashedPassword, // Store the hashed password
+            role: role || 'user'  // Default role is 'user' if not provided
         });
 
         await user.save();
@@ -48,7 +43,6 @@ router.post('/login', async (req, res) => {
             console.log('User not found');
             return res.status(400).json({ message: 'Invalid credentials' });
         }
-        
 
         const isMatch = await bcrypt.compare(password, user.password);
         console.log(isMatch);
@@ -57,7 +51,8 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        // Generate token with the user role included
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token });
     } catch (error) {
         res.status(500).json({ error: error.message });
