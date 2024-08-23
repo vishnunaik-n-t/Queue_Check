@@ -1,7 +1,7 @@
 // routes/shopRoutes.js
 const express = require('express');
 const router = express.Router();
-const Shop = require('../models/Shop');
+const Shop = require('../models/shop');
 const { protect } = require('../middlewares/authMiddleware');
 const { isShopOwner } = require('../middlewares/roleMiddleware');
 
