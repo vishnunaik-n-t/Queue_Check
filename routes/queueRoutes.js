@@ -13,6 +13,7 @@ router.post('/manage', protect, async (req, res) => {
 
         if (queue) {
             // Update existing queue
+            
             queue.currentQueue = currentQueue;
             queue.status = status;
             await queue.save();
@@ -35,13 +36,21 @@ router.post('/manage', protect, async (req, res) => {
 // Get queue details for a shop
 router.get('/:shopId', async (req, res) => {
     try {
-        const queue = await Queue.findOne({ shop: req.params.shopId });
+        const queue = await Queue.findOne({ shop: req.params.shopId }).populate('shop');
 
         if (!queue) {
             return res.status(404).json({ message: 'Queue not found for this shop' });
         }
 
-        res.status(200).json(queue);
+        const estimatedWaitTime = queue.currentQueue * queue.estimatedTimePerCustomer;
+
+        res.status(200).json({
+            shopName: queue.shop.shopName,
+            currentQueue: queue.currentQueue,
+            estimatedTimePerCustomer: queue.estimatedTimePerCustomer,
+            estimatedWaitTime, // in minutes
+            status: queue.status,
+        });
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });
     }

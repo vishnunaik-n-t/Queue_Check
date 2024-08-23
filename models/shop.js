@@ -17,8 +17,12 @@ const ShopSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['open', 'closed'],
-        default: 'open'
+        enum: ['Open', 'Closed'],
+        default: 'Open'
+    },
+    estimatedTimePerCustomer: {
+        type: Number, // in minutes
+        default: 5, // Default to 10 minutes per customer
     },
     createdAt: {
         type: Date,

@@ -15,6 +15,11 @@ const queueSchema = new mongoose.Schema({
         enum: ['Open', 'Closed'],
         default: 'Open',
     },
+    estimatedTimePerCustomer: {
+        type: Number, // in minutes
+        required: true,
+        default: 5, // Default to 10 minutes per customer
+    }
 }, {
     timestamps: true,
 });

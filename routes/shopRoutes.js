@@ -2,12 +2,13 @@
 const express = require('express');
 const router = express.Router();
 const Shop = require('../models/shop');
+const Queue = require('../models/queue');
 const { protect } = require('../middlewares/authMiddleware');
 const { isShopOwner } = require('../middlewares/roleMiddleware');
 
 // Create or Update Shop
 router.post('/manage', protect, isShopOwner, async (req, res) => {
-    const { shopName, location, status } = req.body;
+    const { shopName, location, status, estimatedTimePerCustomer } = req.body;
 
     try {
         let shop = await Shop.findOne({ shopOwner: req.user._id });
@@ -18,6 +19,20 @@ router.post('/manage', protect, isShopOwner, async (req, res) => {
             shop.location = location;
             shop.status = status;
             shop.updatedAt = Date.now();
+            let queue = await Queue.findOne({ shop: shop._id });
+            if (queue) {
+                shop.estimatedTimePerCustomer = estimatedTimePerCustomer;
+                queue.estimatedTimePerCustomer = estimatedTimePerCustomer;
+                queue.status = status;
+                await queue.save();
+            }else {
+                // Create a new queue entry if it does not exist
+                queue = new Queue({
+                    shop: shop._id,
+                    estimatedTimePerCustomer,
+                });
+                await queue.save();
+            }
             await shop.save();
             res.status(200).json({ message: 'Shop updated successfully', shop });
         } else {
@@ -28,7 +43,13 @@ router.post('/manage', protect, isShopOwner, async (req, res) => {
                 location,
                 status
             });
+
+            const queue = new Queue({
+                shop: shop._id,
+                estimatedTimePerCustomer,
+            });
             await shop.save();
+            await queue.save();
             res.status(201).json({ message: 'Shop created successfully', shop });
         }
     } catch (error) {
