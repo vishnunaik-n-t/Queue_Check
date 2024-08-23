@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueueCheck</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>QueueCheck</h1>
+        <p>Find shops and check their queue status</p>
+    </header>
+
+    <main>
+        <!-- Search Section -->
+        <section id="search-section">
+            <h2>Search Shops by Location</h2>
+            <form id="search-form">
+                <input type="text" id="location-input" placeholder="Enter location" required>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <!-- Shop List Section -->
+        <section id="shop-list-section">
+            <h2>Shops in Location</h2>
+            <ul id="shop-list">
+                <!-- Shops will be dynamically added here -->
+            </ul>
+        </section>
+
+        <!-- Queue Details Section -->
+        <section id="queue-details-section">
+            <h2>Queue Details</h2>
+            <div id="queue-details">
+                <!-- Queue details will be dynamically added here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 QueueCheck. All rights reserved.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

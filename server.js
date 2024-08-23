@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const shopRoutes = require('./routes/shopRoutes');
 const { protect } = require('./middlewares/authMiddleware');
 const queueRoutes = require('./routes/queueRoutes');
+const cors = require('cors');
 
 const app = express();
 require('dotenv').config();
@@ -11,6 +12,7 @@ require('dotenv').config();
 
 // Middleware
 app.use(express.json());
+app.use(cors());
 
 app.use('/api/queue', queueRoutes);
 app.use('/api/auth', authRoutes);

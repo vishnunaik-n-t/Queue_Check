@@ -57,6 +57,23 @@ router.post('/manage', protect, isShopOwner, async (req, res) => {
     }
 });
 
+router.get('/search', async (req, res) => {
+    const { location } = req.query;
+
+    try {
+        // Find shops that match the location
+        const shops = await Shop.find({ location: new RegExp(location, 'i') }); // Case-insensitive search
+
+        if (!shops.length) {
+            return res.status(404).json({ message: 'No shops found in this location' });
+        }
+
+        res.status(200).json(shops);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
  
 router.get('/my-shop', protect, isShopOwner, async (req, res) => {
     try {
