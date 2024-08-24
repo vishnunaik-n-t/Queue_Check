@@ -9,7 +9,8 @@ const ShopSchema = new mongoose.Schema({
     },
     shopName: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     location: {
         type: String,
@@ -22,7 +23,7 @@ const ShopSchema = new mongoose.Schema({
     },
     estimatedTimePerCustomer: {
         type: Number, // in minutes
-        default: 5, // Default to 10 minutes per customer
+        default:2,
     },
     createdAt: {
         type: Date,

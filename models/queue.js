@@ -17,8 +17,7 @@ const queueSchema = new mongoose.Schema({
     },
     estimatedTimePerCustomer: {
         type: Number, // in minutes
-        required: true,
-        default: 5, // Default to 10 minutes per customer
+        default:3,
     }
 }, {
     timestamps: true,

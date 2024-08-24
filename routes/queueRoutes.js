@@ -1,26 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const Queue = require('../models/queue');
+const Shop = require('../models/shop');
 const { protect } = require('../middlewares/authMiddleware');
 
 // Shop owner creates or updates queue
 router.post('/manage', protect, async (req, res) => {
-    const { shopId, currentQueue, status } = req.body;
+    const { shopName, currentQueue, status } = req.body;
 
     try {
+        // Find the shop by its name
+        const shop = await Shop.findOne({ shopName });
+
+        if (!shop) {
+            return res.status(404).json({ message: 'Shop not found' });
+        }
+
         // Find the queue for the shop
-        let queue = await Queue.findOne({ shop: shopId });
+        let queue = await Queue.findOne({ shop: shop._id });
 
         if (queue) {
             // Update existing queue
-            
             queue.currentQueue = currentQueue;
             queue.status = status;
             await queue.save();
         } else {
             // Create new queue for the shop
             queue = new Queue({
-                shop: shopId,
+                shop: shop._id,
                 currentQueue,
                 status,
             });
@@ -32,6 +39,7 @@ router.post('/manage', protect, async (req, res) => {
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 });
+
 
 // Get queue details for a shop
 router.get('/:shopId', async (req, res) => {

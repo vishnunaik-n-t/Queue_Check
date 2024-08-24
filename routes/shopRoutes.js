@@ -53,6 +53,7 @@ router.post('/manage', protect, isShopOwner, async (req, res) => {
             res.status(201).json({ message: 'Shop created successfully', shop });
         }
     } catch (error) {
+        console.error('Error:', error.message);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
