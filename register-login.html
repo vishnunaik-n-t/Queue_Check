@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register/Login</title>
+    <link rel="stylesheet" href="./css/login_register_style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Register/Login</h2>
+        
+        <!-- Registration Section -->
+        <div class="form-section" id="register-section">
+            <h3>Register</h3>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-userType">Register as:</label>
+                    <select id="register-userType" required>
+                        <option value="user">User</option>
+                        <option value="shopOwner">Shop Owner</option>
+                    </select>
+                </div>
+                <button type="submit">Register</button>
+                <p id="register-error-message"></p>
+            </form>
+        </div>
+        
+        <!-- Login Section -->
+        <a href="login.html">login</a>
+    </div>
+    <script src="./script/register_login_app.js"></script>
+</body>
+</html>

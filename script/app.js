@@ -1,7 +1,5 @@
-// app.js
-
-// Function to handle search by location
-async function searchShopsByLocation(event) {
+ // Function to handle search by location
+ async function searchShopsByLocation(event) {
     event.preventDefault();
 
     const location = document.querySelector('#location-input').value;
